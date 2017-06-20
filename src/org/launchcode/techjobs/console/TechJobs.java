@@ -3,6 +3,8 @@ package org.launchcode.techjobs.console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.Iterator;
 
 /**
  * Created by LaunchCode
@@ -57,11 +59,13 @@ public class TechJobs {
                 String searchField = getUserSelection("Search by:", columnChoices);
 
                 // What is their search term?
+
                 System.out.println("\nSearch term: ");
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    //System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -111,6 +115,26 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        if(someJobs.size()==0){
+            System.out.println("No Results");
+        }
+
+        //for (int a =0; a<someJobs.size();a++)
+        for (HashMap<String, String> tmpData : someJobs)
+        {
+            //HashMap<String, String> tmpData = (HashMap<String, String>) someJobs.get(a);
+            Set<String> key = tmpData.keySet();
+            Iterator it = key.iterator();
+            System.out.println("************************");
+            while (it.hasNext()) {
+                String hmKey = (String)it.next();
+                String hmData = (String) tmpData.get(hmKey);
+
+                System.out.println(hmKey +": " + hmData);
+                //it.remove(); // avoids a ConcurrentModificationException
+            }
+        }
+
+        //System.out.println("printJobs is not implemented yet");
     }
 }

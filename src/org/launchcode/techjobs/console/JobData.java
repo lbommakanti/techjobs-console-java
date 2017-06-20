@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -76,9 +74,37 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
+        }
+
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> tmpData : allJobs) {
+
+            Set<String> key = tmpData.keySet();
+            Iterator it = key.iterator();
+            System.out.println("************************");
+            while (it.hasNext()) {
+                String hmKey = (String)it.next();
+                String aValue = (String) tmpData.get(hmKey);
+                if (aValue.toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(tmpData);
+                }
+                //System.out.println(hmKey +": " + hmData);
+                //it.remove(); // avoids a ConcurrentModificationException
+            }
+            //String aValue = row.get(column);
+
         }
 
         return jobs;
